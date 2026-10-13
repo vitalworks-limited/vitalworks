@@ -16,3 +16,7 @@ export function parseInquiry(raw) {
   if (!name || !email || !emailPattern.test(email) || organization === null || !subject || !allowedSubjects.has(subject) || !message || message.length < 20 || input.consent !== true) return { error: 'Invalid fields', status: 400 };
   return { value: { name, email, organization, subject, message, consent: true } };
 }
+
+export function isJsonContentType(value) {
+ return typeof value === 'string' && /^application\/json(?:\s*;|\s*$)/i.test(value);
+}
