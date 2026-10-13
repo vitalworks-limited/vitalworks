@@ -132,7 +132,7 @@ The workflow `.github/workflows/website-verification.yml` is configured for push
 
 The CI workflow also runs a **dependency-free Node regression job** (`node --test tests/*.test.mjs`) independently of npm installation. This makes basic security and validation regressions visible even if dependency resolution fails. Passing this job does **not** mean the Next.js production build passed.
 
-**Workflow execution has not been independently confirmed.** GitHub Actions availability may depend on repository permissions and billing. An uploaded artifact is not automatically committed back to `main`. Inspect the run logs, retrieve the lockfile artifact, verify its contents and commit the authentic `package-lock.json` before treating dependency locking as complete.
+**Workflow execution has not been independently confirmed.** GitHub Actions availability may depend on repository permissions and billing. The workflow also uploads `website-verification-logs` containing the npm installation and build-verification output when available, including on failed runs. Treat these logs as build evidence, not as proof of success unless the actual steps passed. An uploaded artifact is not automatically committed back to `main`. Inspect the run logs, retrieve the lockfile artifact, verify its contents and commit the authentic `package-lock.json` before treating dependency locking as complete.
 
 See [GitHub Actions](https://github.com/vitalworks-limited/vitalworks/actions) and [CI bootstrap documentation](docs/PHASE3W_GITHUB_BUILD_BOOTSTRAP.md).
 
