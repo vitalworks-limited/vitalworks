@@ -1,4 +1,5 @@
 import { existsSync,readFileSync } from 'node:fs';
+import { validateWebhookDestination } from '../src/lib/webhook-destination.mjs';
 export function checkRelease(root=process.cwd(),env=process.env){
  const failures=[];
  if(!existsSync(root+'/package-lock.json'))failures.push('Missing package-lock.json');
@@ -12,7 +13,7 @@ export function checkRelease(root=process.cwd(),env=process.env){
  }
  if(env.VITALWORKS_RELEASE==='production'){
   try{const url=new URL(env.NEXT_PUBLIC_SITE_URL);if(url.protocol!=='https:'||url.pathname!=='/'||url.hostname.endsWith('.example'))throw Error();}catch{failures.push('Invalid production domain');}
-  if(!env.INQUIRY_WEBHOOK_URL||!env.INQUIRY_WEBHOOK_ALLOWED_HOST)failures.push('Missing inquiry receiver configuration');
+  if(!validateWebhookDestination(env.INQUIRY_WEBHOOK_URL,env.INQUIRY_WEBHOOK_ALLOWED_HOST))failures.push('Invalid or unapproved inquiry receiver configuration');
  }
  return {ok:failures.length===0,failures};
 }
