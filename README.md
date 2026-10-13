@@ -130,6 +130,8 @@ Publish only verified business details, client relationships, product status, st
 
 The workflow `.github/workflows/website-verification.yml` is configured for pushes to `main`, pull requests and manual execution. It attempts to create a genuine lockfile if missing, uploads it as the `npm-lockfile` artifact, installs dependencies with `npm ci` and executes `npm run verify`.
 
+The CI workflow also runs a **dependency-free Node regression job** (`node --test tests/*.test.mjs`) independently of npm installation. This makes basic security and validation regressions visible even if dependency resolution fails. Passing this job does **not** mean the Next.js production build passed.
+
 **Workflow execution has not been independently confirmed.** GitHub Actions availability may depend on repository permissions and billing. An uploaded artifact is not automatically committed back to `main`. Inspect the run logs, retrieve the lockfile artifact, verify its contents and commit the authentic `package-lock.json` before treating dependency locking as complete.
 
 See [GitHub Actions](https://github.com/vitalworks-limited/vitalworks/actions) and [CI bootstrap documentation](docs/PHASE3W_GITHUB_BUILD_BOOTSTRAP.md).
