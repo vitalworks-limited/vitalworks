@@ -1,5 +1,6 @@
+import { publicationReady } from '@/lib/server-publication';
 import type { MetadataRoute } from 'next';
-import { site, publicationReady } from '@/lib/site';
+import { site } from '@/lib/site';
 
 export default function robots(): MetadataRoute.Robots {
   const production = publicationReady;

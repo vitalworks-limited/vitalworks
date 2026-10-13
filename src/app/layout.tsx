@@ -1,6 +1,7 @@
+import { publicationReady } from '@/lib/server-publication';
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import { site, publicationReady } from '@/lib/site';
+import { site } from '@/lib/site';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 export const metadata: Metadata = {

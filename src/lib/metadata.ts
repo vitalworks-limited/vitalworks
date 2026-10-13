@@ -1,5 +1,6 @@
+import { publicationReady } from './server-publication';
 import type { Metadata } from 'next';
-import { site, publicationReady } from './site';
+import { site } from './site';
 
 export function pageMetadata(title: string, description: string, path: string): Metadata {
   const ready = publicationReady;
