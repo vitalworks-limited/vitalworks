@@ -1,0 +1,39 @@
+name: Website verification and lockfile bootstrap
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package-lock.json
+        continue-on-error: true
+      - name: Resolve dependencies and generate initial lockfile when missing
+        run: |
+          if [ ! -f package-lock.json ]; then
+            npm install --package-lock-only --no-audit --no-fund
+          fi
+      - name: Upload npm lockfile evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-lockfile
+          path: package-lock.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Install pinned dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Source checks and dependency-backed verification
+        run: npm run verify
+        env:
+          NEXT_PUBLIC_SITE_URL: https://www.vitalworks.example
+          NEXT_PUBLIC_SITE_PUBLISHED: 'false'
