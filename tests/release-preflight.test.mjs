@@ -24,7 +24,7 @@ test('mismatched package lock rejected',()=>withManifest(root=>{
  assert.equal(checkRelease(root,{}).ok,false);
 }));
 test('production requires domain and inquiry destination',()=>withManifest(root=>assert.equal(checkRelease(root,{VITALWORKS_RELEASE:'production'}).ok,false)));
-test('configured production passes basic preflight',()=>withManifest(root=>assert.equal(checkRelease(root,{VITALWORKS_RELEASE:'production',NEXT_PUBLIC_SITE_URL:'https://vitalworks.test',INQUIRY_WEBHOOK_URL:'https://hooks.vitalworks.test/inquiries',INQUIRY_WEBHOOK_ALLOWED_HOST:'hooks.vitalworks.test'}).ok,true)));
+test('configured production passes basic preflight',()=>withManifest(root=>assert.equal(checkRelease(root,{VITALWORKS_RELEASE:'production',NEXT_PUBLIC_SITE_URL:'https://vitalworks.test',NEXT_PUBLIC_SITE_PUBLISHED:'true',INQUIRY_WEBHOOK_URL:'https://hooks.vitalworks.test/inquiries',INQUIRY_WEBHOOK_ALLOWED_HOST:'hooks.vitalworks.test'}).ok,true)));
 
 test('production rejects HTTP inquiry receiver',()=>withManifest(root=>assert.equal(checkRelease(root,{VITALWORKS_RELEASE:'production',NEXT_PUBLIC_SITE_URL:'https://vitalworks.test',INQUIRY_WEBHOOK_URL:'http://hooks.vitalworks.test/inquiries',INQUIRY_WEBHOOK_ALLOWED_HOST:'hooks.vitalworks.test'}).ok,false)));
 test('production rejects unapproved inquiry host',()=>withManifest(root=>assert.equal(checkRelease(root,{VITALWORKS_RELEASE:'production',NEXT_PUBLIC_SITE_URL:'https://vitalworks.test',INQUIRY_WEBHOOK_URL:'https://other.test/inquiries',INQUIRY_WEBHOOK_ALLOWED_HOST:'hooks.vitalworks.test'}).ok,false)));
@@ -34,3 +34,5 @@ test('production rejects credentialed and queried site origin',()=>withManifest(
  assert.equal(checkRelease(root,{...base,NEXT_PUBLIC_SITE_URL:'https://user:password@vitalworks.test'}).ok,false);
  assert.equal(checkRelease(root,{...base,NEXT_PUBLIC_SITE_URL:'https://vitalworks.test/?source=test'}).ok,false);
 }));
+
+test('production rejects website without publication authorization',()=>withManifest(root=>assert.equal(checkRelease(root,{VITALWORKS_RELEASE:'production',NEXT_PUBLIC_SITE_URL:'https://vitalworks.test',INQUIRY_WEBHOOK_URL:'https://hooks.vitalworks.test/inquiries',INQUIRY_WEBHOOK_ALLOWED_HOST:'hooks.vitalworks.test'}).ok,false)));
