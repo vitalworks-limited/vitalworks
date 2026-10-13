@@ -10,7 +10,7 @@ export const metadata: Metadata = {
  applicationName:site.name,
  alternates:{canonical:'/'},
  openGraph:{type:'website',locale:'en_UG',siteName:site.name,title:'Vitalworks Limited | Technology & Digital Engineering',description:site.description,url:site.url},
- robots:{index:true,follow:true},
+ robots: site.url.includes('.example') ? {index:false,follow:false} : {index:true,follow:true},
 };
 export const viewport: Viewport = {width:'device-width',initialScale:1,themeColor:'#f7f8fa'};
 export default function RootLayout({children}:{children:React.ReactNode}){
