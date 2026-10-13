@@ -110,3 +110,55 @@ main:has(.interior) {background:linear-gradient(145deg,#edf4f7 0%,#dfeaf0 55%,#e
 @media(max-width:800px){.shell{width:min(100% - 44px,1320px)}.header-inner{min-height:76px}.brand-logo{width:119px}.hero-grid{padding-block:65px}.hero-art{min-height:370px}.section,.section-brief{padding-block:72px}.service-row strong{font-size:22px}.company-purpose,.company-values,.company-corporate{padding-block:75px}}
 @media(max-width:520px){body{font-size:16px}.shell{width:calc(100% - 36px)}.hero h1{font-size:clamp(45px,11vw,59px)}.hero-art{min-height:305px}.hero-lead{font-size:18px}.display-section{font-size:31px}.interior h1{font-size:clamp(40px,10vw,53px)}.industry-item{min-height:150px}.footer h2{font-size:35px}.eyebrow{font-size:12px}.service-row small{font-size:14px}.form-column{padding:24px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+
+/* Navigation v5 — structured desktop mega menu and restrained mobile drawer */
+.site-header{position:sticky;top:0;z-index:100;isolation:isolate}
+.header-inner{position:relative;z-index:2}
+.desktop-nav{margin-left:auto;gap:clamp(13px,1.45vw,26px)}
+.desktop-nav a,.desktop-nav .nav-trigger{font:700 15px/1.4 Arial,Helvetica,sans-serif;letter-spacing:0;white-space:nowrap;min-height:48px;display:inline-flex;align-items:center;gap:8px;padding:12px 0;color:#143348;position:relative}
+.desktop-nav a::after,.desktop-nav .nav-trigger::after{content:"";position:absolute;bottom:6px;left:0;right:0;height:3px;background:var(--brand-orange);transform:scaleX(0);transform-origin:left;transition:transform .18s}
+.desktop-nav a:hover::after,.desktop-nav a[aria-current="page"]::after,.desktop-nav .nav-trigger.nav-active::after,.desktop-nav .nav-trigger[aria-expanded="true"]::after{transform:scaleX(1)}
+.desktop-nav a:hover,.desktop-nav .nav-trigger:hover,.desktop-nav .nav-trigger[aria-expanded="true"]{color:#0b2032}
+.nav-chevron{font-size:19px;display:inline-block;transition:transform .18s}
+.nav-chevron.is-open{transform:rotate(180deg)}
+.header-action{background:#0b2032;color:#fff;padding:13px 18px;border:0;border-radius:8px;font-size:15px;font-weight:700;min-height:48px;display:inline-flex;align-items:center;gap:14px;transition:background .18s,transform .18s}
+.header-action:hover{background:#214b64;transform:translateY(-1px)}
+.header-action span{color:#ffac6b;margin:0}
+.mega-panel{position:absolute;top:100%;left:0;right:0;width:100%;padding:0;background:#eaf3f7;border:0;border-top:1px solid #bdd0db;border-bottom:3px solid #f58220;border-radius:0;box-shadow:0 28px 64px #071d2f3b;z-index:1}
+.mega-layout{display:grid;grid-template-columns:minmax(255px,.82fr) minmax(0,1.65fr);gap:clamp(32px,5vw,80px);padding-block:38px 44px}
+.mega-intro{padding:8px 32px 8px 0;border-right:1px solid #bbced9}
+.mega-intro .eyebrow{color:#a24c0a;margin-bottom:15px;font-size:12px}
+.mega-intro h2{font:800 clamp(25px,2.4vw,34px)/1.2 Arial,Helvetica,sans-serif;letter-spacing:-.03em;margin:0 0 17px;max-width:355px}
+.mega-intro p:not(.eyebrow){color:#425d70;font-size:15px;line-height:1.7;max-width:380px}
+.mega-all{font-size:15px;font-weight:800;display:inline-flex;gap:20px;align-items:center;margin-top:22px;color:#0b2032;border-bottom:2px solid #f58220;padding-bottom:7px}
+.mega-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:27px;row-gap:0;margin:0}
+.mega-link{display:grid;grid-template-columns:26px minmax(0,1fr) 18px;gap:12px;align-items:start;border-bottom:1px solid #bfd2dc;padding:17px 5px;text-decoration:none;transition:background .18s,padding .18s}
+.mega-link:hover{background:#f8fbfd;padding-inline:11px}
+.mega-link-index{color:#b15c1a;font-weight:800;font-size:12px;padding-top:4px}
+.mega-links .mega-link strong{font:800 17px/1.35 Arial,Helvetica,sans-serif;color:#0b2032}
+.mega-links .mega-link small{font:400 14px/1.52 Arial,Helvetica,sans-serif;color:#4a6475;display:block;margin-top:5px}
+.mega-link-arrow{font-size:17px;color:#b15c1a}
+.nav-mobile-toggle{display:none}
+.mobile-drawer{display:none}
+@media(max-width:1050px){.desktop-nav{gap:12px}.desktop-nav a,.desktop-nav .nav-trigger{font-size:14px}.header-action{padding:12px 14px}}
+@media(max-width:900px){
+ .desktop-nav,.header-action{display:none}
+ .nav-mobile-toggle{margin-left:auto;display:inline-flex;align-items:center;gap:13px;min-height:48px;background:#0b2032;color:white;border:0;border-radius:8px;padding:10px 17px;font:700 16px Arial,Helvetica,sans-serif;cursor:pointer}
+ .mobile-toggle-glyph{font-size:22px;line-height:1;color:#f58220}
+ .mobile-drawer{display:block;position:absolute;top:100%;left:0;right:0;background:#edf5f9;border-top:1px solid #cadbe4;box-shadow:0 22px 45px #0b203236;max-height:0;overflow:hidden;visibility:hidden;transition:max-height .25s,visibility .25s}
+ .mobile-drawer.is-open{max-height:calc(100dvh - 76px);overflow:auto;visibility:visible}
+ .mobile-drawer-inner{padding:14px max(22px,calc((100vw - 1320px)/2)) 30px}
+ .mobile-top-link,.mobile-nav-heading{display:flex;align-items:center;justify-content:space-between;min-height:58px;border-bottom:1px solid #c4d5df;padding:11px 3px;font:800 18px Arial,Helvetica,sans-serif}
+ .mobile-top-link span{color:#ad5813}
+ .mobile-nav-heading>a{flex:1}
+ .mobile-nav-heading button{width:44px;height:44px;border:1px solid #b6cbd6;border-radius:8px;background:#f7fbfd;font-size:25px;color:#0b2032;cursor:pointer}
+ .mobile-nav-children{margin:0;padding:8px 0 15px 17px;border-left:3px solid #f58220}
+ .mobile-nav-children[hidden]{display:none}
+ .mobile-nav-children a{display:block;min-height:44px;padding:10px 12px;font:600 15px/1.5 Arial,Helvetica,sans-serif;color:#284759}
+ .mobile-nav-children a:hover{background:#dbeaf2}
+ .mobile-contact-link{display:flex;justify-content:space-between;align-items:center;background:#0b2032;color:#fff;padding:15px 18px;border-radius:8px;font-weight:800;font-size:16px;margin-top:22px}
+ .mobile-contact-link span{color:#f58220}
+}
+@media(max-width:520px){.mobile-drawer-inner{padding-inline:18px}.brand-logo{width:120px}}
+@media(prefers-reduced-motion:reduce){.desktop-nav a::after,.desktop-nav .nav-trigger::after,.nav-chevron,.mobile-drawer,.header-action{transition:none!important}}
