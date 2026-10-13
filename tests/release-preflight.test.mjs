@@ -14,7 +14,7 @@ function withManifest(fn) {
  const root=mkdtempSync(join(tmpdir(),'vitalworks-check-'));
  try {
   writeFileSync(join(root,'package.json'),JSON.stringify({name:'website',version:'1.0.0',dependencies:{next:'^15'}}));
-  writeFileSync(join(root,'package-lock.json'),JSON.stringify({name:'website',version:'1.0.0',lockfileVersion:3,packages:{'':{dependencies:{next:'^15'}}}}));
+  writeFileSync(join(root,'package-lock.json'),JSON.stringify({name:'website',version:'1.0.0',lockfileVersion:3,packages:{'':{dependencies:{next:'^15'}},'node_modules/next':{version:'15.5.0',resolved:'https://registry.npmjs.org/next/-/next-15.5.0.tgz',integrity:'sha512-ZXhhbXBsZQ=='}}}));
   fn(root);
  } finally {rmSync(root,{recursive:true,force:true});}
 }
@@ -36,3 +36,8 @@ test('production rejects credentialed and queried site origin',()=>withManifest(
 }));
 
 test('production rejects website without publication authorization',()=>withManifest(root=>assert.equal(checkRelease(root,{VITALWORKS_RELEASE:'production',NEXT_PUBLIC_SITE_URL:'https://vitalworks.test',INQUIRY_WEBHOOK_URL:'https://hooks.vitalworks.test/inquiries',INQUIRY_WEBHOOK_ALLOWED_HOST:'hooks.vitalworks.test'}).ok,false)));
+
+test('rejects superficial lockfile lacking resolved package',()=>withManifest(root=>{
+ writeFileSync(join(root,'package-lock.json'),JSON.stringify({name:'website',version:'1.0.0',lockfileVersion:3,packages:{'':{dependencies:{next:'^15'}}}}));
+ assert.equal(checkRelease(root,{}).ok,false);
+}));
