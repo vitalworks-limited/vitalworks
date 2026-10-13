@@ -1,0 +1,2 @@
+import type { MetadataRoute } from 'next';import { site,solutions } from '@/lib/site';
+export default function sitemap(): MetadataRoute.Sitemap {return ['/', '/company','/solutions',...solutions.map(s=>'/solutions/'+s.slug),'/products','/industries','/insights','/contact'].map(path=>({url:site.url+path,changeFrequency:path==='/'?'weekly':'monthly',priority:path==='/'?1:path.startsWith('/solutions/')?.7:.8}));}
