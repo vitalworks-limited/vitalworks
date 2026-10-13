@@ -13,7 +13,10 @@ export async function POST(request:NextRequest) {
  const size=Number(request.headers.get('content-length')||0);
  if(size>12000)return NextResponse.json({error:'Payload too large'},{status:413});
  let data:Record<string,unknown>;
- try {const body=await request.json(); if(!body||typeof body!=='object'||Array.isArray(body))throw Error('Invalid');data=body;}catch{return NextResponse.json({error:'Invalid request'},{status:400});}
+ try {
+   const raw=await request.text();
+   if(Buffer.byteLength(raw,'utf8')>12000)return NextResponse.json({error:'Payload too large'},{status:413});
+   const body=JSON.parse(raw); if(!body||typeof body!=='object'||Array.isArray(body))throw Error('Invalid');data=body;}catch{return NextResponse.json({error:'Invalid request'},{status:400});}
  const name=stringValue(data.name,120), email=stringValue(data.email,254), organization=stringValue(data.organization,160), subject=stringValue(data.subject,120), message=stringValue(data.message,4000), website=stringValue(data.website,300);
  if(website) return NextResponse.json({ok:true},{status:202});
  if(!name||name.length>120||!emailPattern.test(email)||email.length>254||organization.length>160||!allowedSubjects.has(subject)||message.length<20||message.length>4000||data.consent!==true) return NextResponse.json({error:'Invalid fields'},{status:400});
