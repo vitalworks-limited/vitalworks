@@ -11,7 +11,8 @@
     "smoke": "node scripts/smoke-check.mjs",
     "preflight": "node scripts/release-preflight.mjs",
     "verify": "npm run smoke && npm test && npm run typecheck && npm run lint && npm run build",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "verify:release": "npm run preflight && npm run verify"
   },
   "dependencies": {
     "next": "^15.5.0",
