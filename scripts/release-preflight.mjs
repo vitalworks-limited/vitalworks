@@ -9,7 +9,11 @@ export function checkRelease(root=process.cwd(),env=process.env){
    const pkg=JSON.parse(readFileSync(root+'/package.json','utf8'));
    const lock=JSON.parse(readFileSync(root+'/package-lock.json','utf8'));
    if(lock.name!==pkg.name||lock.version!==pkg.version||lock.lockfileVersion<2)failures.push('Lockfile metadata mismatch');
-   for(const group of ['dependencies','devDependencies'])for(const [name,range] of Object.entries(pkg[group]||{}))if(lock.packages?.['']?.[group]?.[name]!==range)failures.push('Lockfile mismatch: '+name);
+   for(const group of ['dependencies','devDependencies'])for(const [name,range] of Object.entries(pkg[group]||{})){
+    if(lock.packages?.['']?.[group]?.[name]!==range)failures.push('Lockfile mismatch: '+name);
+    const resolved=lock.packages?.['node_modules/'+name];
+    if(!resolved || typeof resolved.version!=='string' || typeof resolved.resolved!=='string' || !resolved.resolved.startsWith('https://registry.npmjs.org/') || typeof resolved.integrity!=='string' || !/^sha(512|384|256)-/.test(resolved.integrity))failures.push('Missing npm resolution/integrity for '+name);
+   }
   }catch{failures.push('Invalid dependency manifest');}
  }
  if(env.VITALWORKS_RELEASE==='production'){
