@@ -12,7 +12,7 @@ export function checkRelease(root=process.cwd(),env=process.env){
   }catch{failures.push('Invalid dependency manifest');}
  }
  if(env.VITALWORKS_RELEASE==='production'){
-  try{const url=new URL(env.NEXT_PUBLIC_SITE_URL);if(url.protocol!=='https:'||url.pathname!=='/'||url.hostname.endsWith('.example'))throw Error();}catch{failures.push('Invalid production domain');}
+  try{const url=new URL(env.NEXT_PUBLIC_SITE_URL);if(url.protocol!=='https:'||url.pathname!=='/'||url.hostname.endsWith('.example')||url.username||url.password||url.port||url.search||url.hash||url.hostname==='localhost')throw Error();}catch{failures.push('Invalid production domain');}
   if(!validateWebhookDestination(env.INQUIRY_WEBHOOK_URL,env.INQUIRY_WEBHOOK_ALLOWED_HOST))failures.push('Invalid or unapproved inquiry receiver configuration');
  }
  return {ok:failures.length===0,failures};
