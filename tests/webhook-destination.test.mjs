@@ -21,3 +21,9 @@ test('reject fragments and unexpected ports',()=>{
  assert.equal(validateWebhookDestination('https://hooks.example.com:8443/path','hooks.example.com'),null);
  assert.equal(validateWebhookDestination('https://hooks.example.com/path#secret','hooks.example.com'),null);
 });
+
+test('reject reserved documentation and broadcast address ranges',()=>{
+ for (const host of ['192.0.2.1','192.88.99.1','198.51.100.1','203.0.113.1','255.255.255.255']) {
+  assert.equal(validateWebhookDestination('https://'+host+'/inquiries',host),null,host);
+ }
+});
