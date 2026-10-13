@@ -7,3 +7,9 @@ test('rejects extra bytes across chunks',async()=>assert.equal((await readBounde
 test('counts UTF-8 bytes rather than characters',async()=>assert.equal((await readBoundedBody(stream(['éé']),3)).status,413));
 test('rejects missing stream',async()=>assert.equal((await readBoundedBody(null,12)).status,400));
 test('rejects invalid UTF-8',async()=>{const s=new ReadableStream({start(c){c.enqueue(Uint8Array.of(255));c.close();}});assert.equal((await readBoundedBody(s,4)).status,400)});
+
+test('rejects already-locked request stream without throwing',async()=>{
+ const s=stream(['ok']);
+ const lock=s.getReader();
+ try{assert.equal((await readBoundedBody(s,10)).status,400);}finally{lock.releaseLock();}
+});
