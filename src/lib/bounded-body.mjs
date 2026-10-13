@@ -1,6 +1,7 @@
 export async function readBoundedBody(body, maxBytes) {
  if (!body || !Number.isSafeInteger(maxBytes) || maxBytes < 1) return { error: 'Invalid request', status: 400 };
- const reader = body.getReader();
+ let reader;
+ try { reader = body.getReader(); } catch { return { error: 'Invalid request', status: 400 }; }
  const chunks = [];
  let total = 0;
  try {
