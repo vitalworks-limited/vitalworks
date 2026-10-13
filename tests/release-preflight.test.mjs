@@ -49,3 +49,14 @@ test('rejects truncated integrity digest',()=>withManifest(root=>{
  writeFileSync(file,JSON.stringify(lock));
  assert.equal(checkRelease(root,{}).ok,false);
 }));
+
+test('rejects mismatched lockfile version metadata',()=>withManifest(root=>{
+ const file=join(root,'package-lock.json');
+ const lock=JSON.parse(readFileSync(file,'utf8'));
+ lock.version='2.0.0';
+ writeFileSync(file,JSON.stringify(lock));
+ assert.equal(checkRelease(root,{}).ok,false);
+}));
+test('rejects unapproved local publication domain',()=>withManifest(root=>{
+ assert.equal(checkRelease(root,{VITALWORKS_RELEASE:'production',NEXT_PUBLIC_SITE_PUBLISHED:'true',NEXT_PUBLIC_SITE_URL:'https://localhost',INQUIRY_WEBHOOK_URL:'https://hooks.vitalworks.test/inquiries',INQUIRY_WEBHOOK_ALLOWED_HOST:'hooks.vitalworks.test'}).ok,false);
+}));
