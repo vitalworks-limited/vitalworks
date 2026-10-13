@@ -1,7 +1,7 @@
 import { isIP } from 'node:net';
 
 function isForbiddenHostname(hostname) {
- const host = hostname.toLowerCase().replace(/\.$/, '');
+ const host = hostname.toLowerCase().replace(/^\[|\]$/g, '').replace(/\.$/, '');
  if (!host || host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.local') || host.endsWith('.internal')) return true;
  if (isIP(host) === 6) return true;
  if (isIP(host) === 4) {
