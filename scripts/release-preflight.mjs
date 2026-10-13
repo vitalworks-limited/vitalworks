@@ -3,7 +3,7 @@ import { isApprovedPublicationUrl } from '../src/lib/publication.mjs';
 import { validateWebhookDestination } from '../src/lib/webhook-destination.mjs';
 function hasValidIntegrity(raw) {
  if (typeof raw !== 'string') return false;
- return raw.trim().split(/\\s+/).some(token => {
+ return raw.trim().split(/\s+/).some(token => {
   const match = /^(sha512|sha384|sha256)-([A-Za-z0-9+/]+={0,2})$/.exec(token);
   if (!match) return false;
   const length = match[1] === 'sha512' ? 64 : match[1] === 'sha384' ? 48 : 32;
