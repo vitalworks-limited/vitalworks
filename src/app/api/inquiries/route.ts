@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { parseInquiry, MAX_INQUIRY_BYTES, isJsonContentType } from '@/lib/inquiry-validation.mjs';
 import { validateWebhookDestination } from '@/lib/webhook-destination.mjs';
+import { readBoundedBody } from '@/lib/bounded-body.mjs';
 
 export const runtime = 'nodejs';
 
@@ -17,13 +18,9 @@ export async function POST(request: NextRequest) {
  if (!isJsonContentType(contentType)) return NextResponse.json({ error: 'JSON required' }, { status: 415 });
  const declaredLength = Number(request.headers.get('content-length') || 0);
  if (declaredLength > MAX_INQUIRY_BYTES) return NextResponse.json({ error: 'Payload too large' }, { status: 413 });
- let raw: string;
- try {
-   raw = await request.text();
- } catch {
-   return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
- }
- const parsed = parseInquiry(raw);
+ const received = await readBoundedBody(request.body, MAX_INQUIRY_BYTES);
+ if ('error' in received) return NextResponse.json({ error: received.error }, { status: received.status });
+ const parsed = parseInquiry(received.text);
  if ('spam' in parsed) return NextResponse.json({ ok: true }, { status: 202 });
  if ('error' in parsed) return NextResponse.json({ error: parsed.error }, { status: parsed.status });
  const payload = parsed.value;
