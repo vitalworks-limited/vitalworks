@@ -18,7 +18,7 @@ export default function Products() {
    <div className="portfolio-overview"><span>SELECTED PLATFORM INITIATIVES</span><strong>{String(portfolio.length).padStart(2,'0')}</strong><Link href="/contact">Discuss a platform <span aria-hidden="true">↗</span></Link></div>
   </section>
   <section className="portfolio-list" aria-label="Technology initiatives"><div className="shell">
-   {portfolio.map((p,index)=><article key={p.name} className="portfolio-entry">
+   {portfolio.map((p,index)=><article key={p.name} id={p.name.toLowerCase().replace(/[^a-z0-9]+/g,'-')} className="portfolio-entry">
     <div className="portfolio-entry-meta"><span>{String(index+1).padStart(2,'0')} / {String(portfolio.length).padStart(2,'0')}</span><span>{p.category}</span></div>
     <div className="portfolio-entry-main"><div><h2>{p.name}</h2><p>{p.summary}</p></div><div className="portfolio-entry-aside"><span>{p.status}</span><Link href={'/contact?interest='+encodeURIComponent(p.name)} aria-label={'Enquire about '+p.name}>Enquire <span aria-hidden="true">↗</span></Link></div></div>
    </article>)}
