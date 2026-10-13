@@ -8,8 +8,9 @@ export const metadata: Metadata = {
  title:{default:'Vitalworks Limited | Technology & Digital Engineering',template:'%s | Vitalworks Limited'},
  description:site.description,
  applicationName:site.name,
+ icons:{icon:[{url:'/brand/brand-symbol-orange.png',type:'image/png'}],apple:'/brand/brand-symbol-orange.png'},
  alternates:{canonical:'/'},
- openGraph:{type:'website',locale:'en_UG',siteName:site.name,title:'Vitalworks Limited | Technology & Digital Engineering',description:site.description,url:site.url},
+ openGraph:{type:'website',locale:'en_UG',siteName:site.name,title:'Vitalworks Limited | Technology & Digital Engineering',description:site.description,url:site.url,images:[{url:'/brand/logo-primary.png',alt:'Vitalworks Limited — Purpose Driven'}]},
  robots: site.url.includes('.example') ? {index:false,follow:false} : {index:true,follow:true},
 };
 export const viewport: Viewport = {width:'device-width',initialScale:1,themeColor:'#f7f8fa'};
