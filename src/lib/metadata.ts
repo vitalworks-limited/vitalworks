@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { site } from './site';
+import { site, publicationReady } from './site';
 
 export function pageMetadata(title: string, description: string, path: string): Metadata {
-  const ready = site.url.startsWith('https://') && !site.url.includes('.example');
+  const ready = publicationReady;
   return {
     title,
     description,
