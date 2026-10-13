@@ -10,7 +10,7 @@ test('release command stops before invoking npm if required lockfile is absent',
  try {
   mkdirSync(join(root,'scripts'));
   mkdirSync(join(root,'src','lib'),{recursive:true});
-  const required = ['scripts/verify-release.mjs','scripts/release-preflight.mjs','src/lib/webhook-destination.mjs'];
+  const required = ['scripts/verify-release.mjs','scripts/release-preflight.mjs','src/lib/webhook-destination.mjs','src/lib/publication.mjs'];
   for (const file of required) {
    const content = readFileSync(new URL('../'+file, import.meta.url),'utf8');
    writeFileSync(join(root,file),content);
