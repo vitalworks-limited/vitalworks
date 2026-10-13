@@ -29,7 +29,6 @@ export function Header() {
  const [mobileOpen, setMobileOpen] = useState(false);
  const [mobileSection, setMobileSection] = useState<MenuName | null>(null);
  const headerRef = useRef<HTMLElement>(null);
- const navToggleRef = useRef<HTMLButtonElement>(null);
  const menuTriggerRefs = useRef<Partial<Record<MenuName, HTMLButtonElement | null>>>({});
  const mobileTriggerRef = useRef<HTMLButtonElement>(null);
 
