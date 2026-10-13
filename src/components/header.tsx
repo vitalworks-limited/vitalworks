@@ -7,7 +7,7 @@ import { site, solutions, portfolio } from '@/lib/site';
 
 const groups = {
  Solutions: solutions.map(x=>({title:x.name,href:'/solutions/'+x.slug,description:x.lead})),
- Products: portfolio.map(x=>({title:x.name,href:'/products',description:x.category+' · '+x.status})),
+ Products: portfolio.map(x=>({title:x.name,href:'/products#'+x.name.toLowerCase().replace(/[^a-z0-9]+/g,'-'),description:x.category+' · '+x.status})),
 };
 export function Header(){
  const pathname=usePathname();
