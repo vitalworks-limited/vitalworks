@@ -9,12 +9,12 @@ test('missing lockfile blocks release', () => {
  try {const result=checkRelease(root,{});assert.equal(result.ok,false);assert.match(result.failures.join(' '),/package-lock/);} finally {rmSync(root,{recursive:true,force:true});}
 });
 
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, readFileSync } from 'node:fs';
 function withManifest(fn) {
  const root=mkdtempSync(join(tmpdir(),'vitalworks-check-'));
  try {
   writeFileSync(join(root,'package.json'),JSON.stringify({name:'website',version:'1.0.0',dependencies:{next:'^15'}}));
-  writeFileSync(join(root,'package-lock.json'),JSON.stringify({name:'website',version:'1.0.0',lockfileVersion:3,packages:{'':{dependencies:{next:'^15'}},'node_modules/next':{version:'15.5.0',resolved:'https://registry.npmjs.org/next/-/next-15.5.0.tgz',integrity:'sha512-ZXhhbXBsZQ=='}}}));
+  writeFileSync(join(root,'package-lock.json'),JSON.stringify({name:'website',version:'1.0.0',lockfileVersion:3,packages:{'':{dependencies:{next:'^15'}},'node_modules/next':{version:'15.5.0',resolved:'https://registry.npmjs.org/next/-/next-15.5.0.tgz',integrity:'sha512-'+Buffer.alloc(64,1).toString('base64')}}}));
   fn(root);
  } finally {rmSync(root,{recursive:true,force:true});}
 }
@@ -39,5 +39,13 @@ test('production rejects website without publication authorization',()=>withMani
 
 test('rejects superficial lockfile lacking resolved package',()=>withManifest(root=>{
  writeFileSync(join(root,'package-lock.json'),JSON.stringify({name:'website',version:'1.0.0',lockfileVersion:3,packages:{'':{dependencies:{next:'^15'}}}}));
+ assert.equal(checkRelease(root,{}).ok,false);
+}));
+
+test('rejects truncated integrity digest',()=>withManifest(root=>{
+ const file=join(root,'package-lock.json');
+ const lock=JSON.parse(readFileSync(file,'utf8'));
+ lock.packages['node_modules/next'].integrity='sha512-ZXhhbXBsZQ==';
+ writeFileSync(file,JSON.stringify(lock));
  assert.equal(checkRelease(root,{}).ok,false);
 }));
