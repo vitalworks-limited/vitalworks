@@ -12,6 +12,7 @@ const required=[
  'src/app/industries/page.tsx','src/app/insights/page.tsx',
  'src/app/contact/page.tsx','src/app/api/inquiries/route.ts',
  'src/components/header.tsx','src/components/footer.tsx',
+ 'src/lib/inquiry-validation.mjs','tests/inquiry-validation.test.mjs',
  'public/brand/logo-primary.png','public/brand/logo-reversed.png',
  'public/brand/brand-symbol-orange.png','public/brand/brand-symbol-navy.png',
 ];
@@ -23,7 +24,7 @@ const checks=[
  ['src/app/sitemap.ts',['MetadataRoute.Sitemap','/company','/products']],
  ['src/app/robots.ts',['MetadataRoute.Robots','sitemap']],
  ['src/components/header.tsx',['aria-expanded','aria-controls','aria-label']],
- ['src/app/api/inquiries/route.ts',['Buffer.byteLength','INQUIRY_WEBHOOK_URL','consent']],
+ ['src/app/api/inquiries/route.ts',['parseInquiry','INQUIRY_WEBHOOK_URL','MAX_INQUIRY_BYTES']],
 ];
 for(const [path,markers] of checks) {
  const file=join(base,path);
