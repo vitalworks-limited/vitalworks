@@ -15,14 +15,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
-          cache-dependency-path: package-lock.json
-        continue-on-error: true
       - name: Resolve dependencies and generate initial lockfile when missing
         run: |
           if [ ! -f package-lock.json ]; then
             npm install --package-lock-only --no-audit --no-fund
           fi
+      - name: Enable npm cache after lockfile exists
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package-lock.json
       - name: Upload npm lockfile evidence
         uses: actions/upload-artifact@v4
         with:
