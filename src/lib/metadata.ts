@@ -14,6 +14,7 @@ export function pageMetadata(title: string, description: string, path: string): 
       siteName: site.name,
       type: 'website',
       locale: 'en_UG',
+      images: [{url:'/brand/logo-primary.png',alt:'Vitalworks Limited — Purpose Driven'}],
     },
     twitter: { card: 'summary_large_image', title: title + ' | Vitalworks Limited', description },
     robots: { index: ready, follow: ready },
