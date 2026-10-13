@@ -1,8 +1,10 @@
+const publicUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vitalworks.example').replace(/\/$/, '');
+export const publicationReady = process.env.NEXT_PUBLIC_SITE_PUBLISHED === 'true' && publicUrl.startsWith('https://') && !publicUrl.includes('.example');
 export const site = {
   name: 'Vitalworks Limited',
   shortName: 'Vitalworks',
   description: 'Vitalworks Limited builds software platforms and delivers technology engineering, enterprise integration and digital services in Uganda.',
-  url: (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vitalworks.example').replace(/\/$/, ''),
+  url: publicUrl,
   navigation: [
     { title: 'Company', href: '/company' },
     { title: 'Solutions', href: '/solutions' },
