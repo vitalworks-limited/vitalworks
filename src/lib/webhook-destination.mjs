@@ -5,9 +5,8 @@ function isForbiddenHostname(hostname) {
  if (!host || host === 'localhost' || host.endsWith('.localhost') || host.endsWith('.local') || host.endsWith('.internal')) return true;
  if (isIP(host) === 6) return true;
  if (isIP(host) === 4) {
-  const parts = host.split('.').map(Number);
-  const [a,b] = parts;
-  return a===0 || a===10 || a===127 || a>=224 || a===169&&b===254 || a===172&&b>=16&&b<=31 || a===192&&b===168 || a===100&&b>=64&&b<=127 || a===192&&b===0 || a===198&&[18,19].includes(b);
+  const [a,b,c] = host.split('.').map(Number);
+  return a===0 || a===10 || a===127 || a>=224 || a===169&&b===254 || a===172&&b>=16&&b<=31 || a===192&&b===168 || a===100&&b>=64&&b<=127 || a===192&&b===0 || a===198&&[18,19,51].includes(b) || a===203&&b===0&&c===113 || a===192&&b===88&&c===99;
  }
  return false;
 }
