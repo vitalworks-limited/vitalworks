@@ -1,4 +1,5 @@
 import { existsSync,readFileSync } from 'node:fs';
+import { isApprovedPublicationUrl } from '../src/lib/publication.mjs';
 import { validateWebhookDestination } from '../src/lib/webhook-destination.mjs';
 export function checkRelease(root=process.cwd(),env=process.env){
  const failures=[];
@@ -13,7 +14,7 @@ export function checkRelease(root=process.cwd(),env=process.env){
  }
  if(env.VITALWORKS_RELEASE==='production'){
   if(env.NEXT_PUBLIC_SITE_PUBLISHED!=='true')failures.push('Website publication has not been explicitly approved');
-  try{const url=new URL(env.NEXT_PUBLIC_SITE_URL);if(url.protocol!=='https:'||url.pathname!=='/'||url.hostname.endsWith('.example')||url.username||url.password||url.port||url.search||url.hash||url.hostname==='localhost')throw Error();}catch{failures.push('Invalid production domain');}
+  if(!isApprovedPublicationUrl(env.NEXT_PUBLIC_SITE_URL))failures.push('Invalid production domain');
   if(!validateWebhookDestination(env.INQUIRY_WEBHOOK_URL,env.INQUIRY_WEBHOOK_ALLOWED_HOST))failures.push('Invalid or unapproved inquiry receiver configuration');
  }
  return {ok:failures.length===0,failures};
