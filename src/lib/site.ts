@@ -1,5 +1,6 @@
+import { canPublish } from './publication.mjs';
 const publicUrl = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vitalworks.example').replace(/\/$/, '');
-export const publicationReady = process.env.NEXT_PUBLIC_SITE_PUBLISHED === 'true' && publicUrl.startsWith('https://') && !publicUrl.includes('.example');
+export const publicationReady = canPublish(process.env);
 export const site = {
   name: 'Vitalworks Limited',
   shortName: 'Vitalworks',
