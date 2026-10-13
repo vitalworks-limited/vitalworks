@@ -45,9 +45,25 @@ jobs:
           if-no-files-found: error
           retention-days: 14
       - name: Install pinned dependencies
-        run: npm ci --no-audit --no-fund
+        shell: bash
+        run: |
+          mkdir -p verification-logs
+          set -o pipefail
+          npm ci --no-audit --no-fund 2>&1 | tee verification-logs/npm-ci.log
       - name: Source checks and dependency-backed verification
-        run: npm run verify
+        shell: bash
+        run: |
+          mkdir -p verification-logs
+          set -o pipefail
+          npm run verify 2>&1 | tee verification-logs/verify.log
         env:
           NEXT_PUBLIC_SITE_URL: https://www.vitalworks.example
           NEXT_PUBLIC_SITE_PUBLISHED: 'false'
+      - name: Preserve installation and verification logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-verification-logs
+          path: verification-logs/
+          if-no-files-found: ignore
+          retention-days: 14
