@@ -9,3 +9,5 @@ export type InquiryResult =
  | { error: string; status: number; value?: never; spam?: never }
  | { spam: true; value?: never; error?: never; status?: never };
 export function parseInquiry(raw: string): InquiryResult;
+
+export function isJsonContentType(value: string | null | undefined): boolean;
