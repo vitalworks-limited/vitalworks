@@ -13,6 +13,7 @@ const required=[
  'src/app/contact/page.tsx','src/app/api/inquiries/route.ts',
  'src/components/header.tsx','src/components/footer.tsx',
  'src/lib/inquiry-validation.mjs','tests/inquiry-validation.test.mjs',
+ 'src/lib/bounded-body.mjs','src/lib/bounded-body.d.mts','tests/bounded-body.test.mjs',
  'public/brand/logo-primary.png','public/brand/logo-reversed.png',
  'public/brand/brand-symbol-orange.png','public/brand/brand-symbol-navy.png',
 ];
@@ -24,7 +25,7 @@ const checks=[
  ['src/app/sitemap.ts',['MetadataRoute.Sitemap','/company','/products']],
  ['src/app/robots.ts',['MetadataRoute.Robots','sitemap']],
  ['src/components/header.tsx',['aria-expanded','aria-controls','aria-label']],
- ['src/app/api/inquiries/route.ts',['parseInquiry','INQUIRY_WEBHOOK_URL','MAX_INQUIRY_BYTES']],
+ ['src/app/api/inquiries/route.ts',['parseInquiry','readBoundedBody','INQUIRY_WEBHOOK_URL','MAX_INQUIRY_BYTES']],
 ];
 for(const [path,markers] of checks) {
  const file=join(base,path);
