@@ -17,6 +17,8 @@ export async function POST(request: NextRequest) {
  if (origin && origin !== new URL(request.url).origin) {
    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
  }
+ const contentType = request.headers.get('content-type') || '';
+ if (!/^application\/json(?:\s*;|\s*$)/i.test(contentType)) return NextResponse.json({ error: 'JSON required' }, { status: 415 });
  const declaredLength = Number(request.headers.get('content-length') || 0);
  if (declaredLength > MAX_INQUIRY_BYTES) return NextResponse.json({ error: 'Payload too large' }, { status: 413 });
  let raw: string;
@@ -38,6 +40,7 @@ export async function POST(request: NextRequest) {
      },
      body: JSON.stringify({ ...payload, receivedAt: new Date().toISOString() }),
      cache: 'no-store',
+     redirect: 'error',
      signal: AbortSignal.timeout(8000),
    });
    if (!response.ok) throw Error('Delivery failed');
