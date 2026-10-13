@@ -1,18 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { parseInquiry, MAX_INQUIRY_BYTES, isJsonContentType } from '@/lib/inquiry-validation.mjs';
+import { validateWebhookDestination } from '@/lib/webhook-destination.mjs';
 
 export const runtime = 'nodejs';
 
 export async function POST(request: NextRequest) {
  const destination = process.env.INQUIRY_WEBHOOK_URL;
  if (!destination) return NextResponse.json({ error: 'Service unavailable' }, { status: 503 });
- let url: URL;
- try {
-   url = new URL(destination);
-   if (url.protocol !== 'https:') throw Error('HTTPS required');
- } catch {
-   return NextResponse.json({ error: 'Service unavailable' }, { status: 503 });
- }
+ const url = validateWebhookDestination(destination, process.env.INQUIRY_WEBHOOK_ALLOWED_HOST);
+ if (!url) return NextResponse.json({ error: 'Service unavailable' }, { status: 503 });
  const origin = request.headers.get('origin');
  if (origin && origin !== new URL(request.url).origin) {
    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
